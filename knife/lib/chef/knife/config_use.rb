@@ -17,6 +17,7 @@
 #
 
 require_relative "../knife"
+require "chef-utils/dist" unless defined?(ChefUtils::Dist)
 
 class Chef
   class Knife
@@ -39,7 +40,7 @@ class Chef
           ui.msg(self.class.config_loader.credentials_profile(config[:profile]))
         else
           credentials_data = self.class.config_loader.parse_credentials_file
-          context_file = ChefConfig::PathHelper.home(".chef", "context").freeze
+          context_file = ChefConfig::PathHelper.home(ChefUtils::Dist::Infra::USER_CONF_DIR, "context").freeze
 
           if credentials_data.nil? || credentials_data.empty?
             ui.fatal("No profiles found, #{self.class.config_loader.credentials_file_path} does not exist or is empty")
